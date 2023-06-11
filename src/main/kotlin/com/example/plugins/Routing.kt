@@ -1,6 +1,9 @@
 package com.example.plugins
 
 import com.typesafe.config.ConfigFactory
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.request.*
 import io.ktor.server.application.*
 import io.ktor.server.config.*
 import io.ktor.server.http.content.*
@@ -17,10 +20,14 @@ fun Application.configureRouting() {
         return "${OPEN_WEATHER_API}?appid=${appid}&lat=${lat}&lon=${lon}&units=metric"
     }
 
-    fun getBerlinWeather(): String {
+    suspend fun getBerlinWeather(): String {
         val latBerlin = 52.520008
         val lonBerlin = 13.404954
-        return "${buildWeatherRequest(latBerlin, lonBerlin)}"
+        val weatherApiUrl = "${buildWeatherRequest(latBerlin, lonBerlin)}"
+        val client = HttpClient(OkHttp)
+        val response: String = client.get(weatherApiUrl).toString()
+        println(response)
+        return weatherApiUrl
     }
 
     routing {
