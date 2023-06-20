@@ -33,6 +33,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
 
     implementation("org.jetbrains:kotlin-css-jvm:1.0.0-pre.129-kotlin-1.4.20")
+    implementation("org.json:json:20211205")
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
