@@ -29,7 +29,7 @@ fun Application.configureRouting() {
         return "${OPEN_WEATHER_API}?appid=${appid}&lat=${lat}&lon=${lon}&units=metric"
     }
 
-    suspend fun getBerlinWeather(): String {
+    suspend fun getBerlinWeather(): JSONObject {
         val latBerlin = 52.520008
         val lonBerlin = 13.404954
         val weatherApiUrl = "${buildWeatherRequest(latBerlin, lonBerlin)}"
@@ -43,13 +43,21 @@ fun Application.configureRouting() {
         println(temp)
         println("****")
 
-        return weatherApiUrl
+        // return weatherApiUrl
+        return jsonObject
+    }
+
+    fun getTemperature(data: JSONObject): String {
+        return data.getJSONObject("main").getDouble("temp").toString()
     }
 
     routing {
         get("/") {
+            // TODO: Add html template
+            val data = getBerlinWeather()
+            val temperature = getTemperature(data)
             call.respondText(
-                "Hello World! Current temperature in Berlin is ${getBerlinWeather()}"
+                "Hello World! Current temperature in Berlin is $temperature"
             )
         }
         // Static plugin. Try to access `/static/index.html`
